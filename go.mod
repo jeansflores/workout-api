@@ -1,6 +1,6 @@
 module github.com/jeansflores/workout-api
 
-go 1.25.2
+go 1.25.3
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect

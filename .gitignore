@@ -1,2 +1,6 @@
 /database
 ./database/*
+.gemini
+.claude
+.cursor
+.vscode
