@@ -12,3 +12,16 @@ services:
       POSTGRES_PASSWORD: secure_password
       POSTGRES_DB: workout_db
     restart: unless-stopped
+
+  test_db:
+    container_name: workout-test-database
+    image: postgres:12.4-alpine
+    volumes:
+      - ./database/postgres-test-data:/var/lib/postgresql/data:rw
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: workout_user
+      POSTGRES_PASSWORD: secure_password
+      POSTGRES_DB: workout_test_db
+    restart: unless-stopped
