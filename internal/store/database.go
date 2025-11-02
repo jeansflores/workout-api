@@ -17,7 +17,7 @@ func Open() (*sql.DB, error) {
 
 	fmt.Println("Connected to Database...")
 	return db, nil
-} 
+}
 
 func MigrateFS(db *sql.DB, migrationsFS fs.FS, dir string) error {
 	goose.SetBaseFS(migrationsFS)

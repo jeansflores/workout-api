@@ -3,23 +3,23 @@ package store
 import "database/sql"
 
 type Workout struct {
-	ID int `json:"id"`
-	Title string `json:"title"`
-	Description string `json:"description"`
-	DurationMinutes int `json:"duration_minutes"`
-	CaloriesBurned int `json:"calories_burned"`
-	Entries []WorkoutEntry `json:"entries"`
+	ID              int            `json:"id"`
+	Title           string         `json:"title"`
+	Description     string         `json:"description"`
+	DurationMinutes int            `json:"duration_minutes"`
+	CaloriesBurned  int            `json:"calories_burned"`
+	Entries         []WorkoutEntry `json:"entries"`
 }
 
 type WorkoutEntry struct {
-	ID int `json:"id"`
-	ExerciseName string `json:"exercise_name"`
-	Sets int `json:"sets"`
-	Reps *int `json:"reps"`
-	DurationSeconds *int `json:"duration_seconds"`
-	Weight *float64 `json:"weight"`
-	Notes string `json:"notes"`
-	OrderIndex int `json:"order_index"`
+	ID              int      `json:"id"`
+	ExerciseName    string   `json:"exercise_name"`
+	Sets            int      `json:"sets"`
+	Reps            *int     `json:"reps"`
+	DurationSeconds *int     `json:"duration_seconds"`
+	Weight          *float64 `json:"weight"`
+	Notes           string   `json:"notes"`
+	OrderIndex      int      `json:"order_index"`
 }
 
 type PostgresWorkoutStore struct {
@@ -88,7 +88,7 @@ func (pg *PostgresWorkoutStore) GetWorkoutByID(id int64) (*Workout, error) {
 		return nil, nil
 	}
 
-	if err != nil { 
+	if err != nil {
 		return nil, err
 	}
 
@@ -144,7 +144,6 @@ func (pg *PostgresWorkoutStore) UpdateWorkout(workout *Workout) error {
 	WHERE id = $5
 	`
 
-	
 	result, err := tx.Exec(query, workout.Title, workout.Description, workout.DurationMinutes, workout.CaloriesBurned, workout.ID)
 	if err != nil {
 		return err
@@ -159,12 +158,12 @@ func (pg *PostgresWorkoutStore) UpdateWorkout(workout *Workout) error {
 	if rowsAffected == 0 {
 		return sql.ErrNoRows
 	}
-	
+
 	_, err = tx.Exec(`DELETE FROM workout_entries WHERE workout_id = $1`, workout.ID)
 	if err != nil {
 		return err
 	}
-	
+
 	for _, entry := range workout.Entries {
 		query := `
 		INSERT INTO workout_entries (workout_id, exercise_name, sets, reps, duration_seconds, weight, notes, order_index)
@@ -185,7 +184,7 @@ func (pg *PostgresWorkoutStore) DeleteWorkout(id int64) error {
 	DELETE FROM workouts
 	WHERE id = $1
 	`
-	
+
 	result, err := pg.db.Exec(query, id)
 	if err != nil {
 		return err

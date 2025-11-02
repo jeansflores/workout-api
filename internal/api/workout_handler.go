@@ -79,13 +79,13 @@ func (wh *WorkoutHandler) HandleUpdateWorkout(w http.ResponseWriter, r *http.Req
 	}
 
 	var updatedWorkoutRequest struct {
-		Title           *string `json:"title"`
-		Description     *string `json:"description"`
-		DurationMinutes *int    `json:"duration_minutes"`
-		CaloriesBurned  *int    `json:"calories_burned"`
+		Title           *string              `json:"title"`
+		Description     *string              `json:"description"`
+		DurationMinutes *int                 `json:"duration_minutes"`
+		CaloriesBurned  *int                 `json:"calories_burned"`
 		Entries         []store.WorkoutEntry `json:"entries"`
 	}
-	
+
 	err = json.NewDecoder(r.Body).Decode(&updatedWorkoutRequest)
 	if err != nil {
 		wh.logger.Printf("ERROR: DecodeUpdateWorkout: %v", err)
@@ -100,7 +100,7 @@ func (wh *WorkoutHandler) HandleUpdateWorkout(w http.ResponseWriter, r *http.Req
 	if updatedWorkoutRequest.Description != nil {
 		existingWorkout.Description = *updatedWorkoutRequest.Description
 	}
-	
+
 	if updatedWorkoutRequest.DurationMinutes != nil {
 		existingWorkout.DurationMinutes = *updatedWorkoutRequest.DurationMinutes
 	}
@@ -130,13 +130,13 @@ func (wh *WorkoutHandler) HandleDeleteWorkout(w http.ResponseWriter, r *http.Req
 		utils.WriteJSON(w, http.StatusBadRequest, utils.Envelope{"error": "invalid id parameter"})
 		return
 	}
-	
+
 	err = wh.workoutStore.DeleteWorkout(workoutID)
 	if err == sql.ErrNoRows {
 		utils.WriteJSON(w, http.StatusNotFound, utils.Envelope{"error": "workout not found"})
 		return
 	}
-	
+
 	if err != nil {
 		wh.logger.Printf("ERROR: DeleteWorkout: %v", err)
 		utils.WriteJSON(w, http.StatusInternalServerError, utils.Envelope{"error": "failed to delete workout"})

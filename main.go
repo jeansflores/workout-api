@@ -37,12 +37,9 @@ func main() {
 
 	app.Logger.Printf("Starting server on port %d\n", port)
 
-
 	err = server.ListenAndServe()
 
 	if err != nil {
 		app.Logger.Fatalf("Could not start server: %s\n", err.Error())
 	}
 }
-
-
